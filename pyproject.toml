@@ -1,0 +1,10 @@
+[project]
+name = "cd-agents-sensing"
+version = "0.1.0"
+description = "L2 sensing watchers — snapshot store, anomaly flags, vault digest"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q"
