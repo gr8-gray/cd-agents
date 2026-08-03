@@ -25,6 +25,7 @@ def build_report(
     sources: list,
     generated: str,
     narrative: str | None = None,
+    narrator=None,
     config: dict | None = None,
 ) -> Report:
     # Persist today's snapshot FIRST (trailing reads date < today, so this can't
@@ -41,6 +42,13 @@ def build_report(
             deltas[metric] = round(value - sum(vals) / len(vals), 2)
 
     flags = evaluate(today_metrics, trailing, config)
+
+    # Node inference fills the narrative AFTER flags are known, so it can describe
+    # what actually flagged. narrator(today_metrics, flags) -> str. An explicit
+    # narrative= wins if both are given.
+    if narrative is None and narrator is not None:
+        narrative = narrator(today_metrics, flags)
+
     digest = render_digest(
         property=property, date=date, metrics=today_metrics, flags=flags,
         sources=sources, generated=generated, narrative=narrative, deltas=deltas,

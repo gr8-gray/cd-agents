@@ -46,6 +46,28 @@ def test_build_report_persists_todays_snapshot_for_future_baselines():
     assert store.get(date="2026-08-08", source="stripe", metric="net_revenue") == 100.0
 
 
+def test_build_report_calls_narrator_with_flags_and_embeds_its_output():
+    store = MetricStore(":memory:")
+    _seed_week(store, "net_revenue", 200.0, source="stripe")
+    seen = {}
+
+    def fake_narrator(today_metrics, flags):
+        seen["metrics"] = today_metrics
+        seen["flag_keys"] = [f.key for f in flags]
+        return "NARRATIVE-FROM-NODE"
+
+    report = build_report(
+        store, property="IV", date="2026-08-08",
+        today_metrics={"net_revenue": 100.0},
+        metric_sources={"net_revenue": "stripe"},
+        sources=["stripe"], generated="2026-08-09T06:00:00Z",
+        narrator=fake_narrator,
+    )
+
+    assert seen["flag_keys"] == ["revenue-drop"]          # narrator sees the computed flags
+    assert "NARRATIVE-FROM-NODE" in report.digest         # and its prose lands in the digest
+
+
 def test_build_report_has_no_anomaly_on_a_healthy_day():
     store = MetricStore(":memory:")
     _seed_week(store, "net_revenue", 200.0, source="stripe")
