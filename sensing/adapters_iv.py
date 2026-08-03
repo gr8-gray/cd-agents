@@ -75,22 +75,28 @@ def iv_daily_metrics(now: datetime | None = None):
     sources: list = []
 
     if STRIPE_KEY_FILE.exists():
-        key = STRIPE_KEY_FILE.read_text().strip()
-        cents, orders = _stripe_day(key, int(yday.timestamp()), int(midnight_today.timestamp()))
-        metrics["net_revenue"] = round(cents / 100, 2)
-        metrics["payments"] = orders
-        msrc["net_revenue"] = msrc["payments"] = "stripe"
-        sources.append("stripe")
+        try:
+            key = STRIPE_KEY_FILE.read_text().strip()
+            cents, orders = _stripe_day(key, int(yday.timestamp()), int(midnight_today.timestamp()))
+            metrics["net_revenue"] = round(cents / 100, 2)
+            metrics["payments"] = orders
+            msrc["net_revenue"] = msrc["payments"] = "stripe"
+            sources.append("stripe")
+        except Exception as e:
+            print(f"adapters_iv: stripe pull failed, skipping — {str(e)[:140]}")
 
     token = os.environ.get("CF_API_TOKEN") or (
         CF_TOKEN_FILE.read_text().strip() if CF_TOKEN_FILE.exists() else None
     )
     if token:
-        cf = _cf_day(token, IV_ZONE, date_str)
-        if cf is not None:
-            metrics["visits"] = cf["visits"]
-            metrics["pageviews"] = cf["pageviews"]
-            msrc["visits"] = msrc["pageviews"] = "cf"
-            sources.append("cf")
+        try:
+            cf = _cf_day(token, IV_ZONE, date_str)
+            if cf is not None:
+                metrics["visits"] = cf["visits"]
+                metrics["pageviews"] = cf["pageviews"]
+                msrc["visits"] = msrc["pageviews"] = "cf"
+                sources.append("cf")
+        except Exception as e:
+            print(f"adapters_iv: cloudflare pull failed, skipping — {str(e)[:140]}")
 
     return date_str, metrics, msrc, sources
