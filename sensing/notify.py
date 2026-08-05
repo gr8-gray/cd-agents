@@ -1,12 +1,15 @@
 """ntfy anomaly push — reuses the node's blessed notifier (~/jarvis/bin/notify),
 the same path site-monitor and weekly-report use, so server/topic/auth stay in one place.
 """
+import os
 import subprocess
 from pathlib import Path
 
 HOME = Path.home()
 NOTIFY = HOME / "jarvis" / "bin" / "notify"
-REPORT_URL = "https://node.internal/report"  # ntfy tap (matches site-monitor)
+# ntfy tap. Real value lives in the node env (STOP 21 — never hardcode the tailnet
+# host in a publish-candidate repo). Set CIRE_REPORT_URL on the node.
+REPORT_URL = os.getenv("CIRE_REPORT_URL", "")
 
 
 def notify_anomaly(property: str, date: str, flags, priority: str = "high") -> bool:
