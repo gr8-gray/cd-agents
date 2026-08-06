@@ -4,7 +4,7 @@ __pycache__/
 *.sqlite
 *.db
 .venv/
-# creds never in repo (STOP 21) — live on cire as files/env
+# creds never in repo (STOP 21) — live on the node as files/env
 secrets/
 *.key
 .planning/

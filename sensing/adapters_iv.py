@@ -2,7 +2,7 @@
 Cloudflare calls, but windowed to YESTERDAY (full UTC day). Today is partial and would
 false-flag traffic-drop/zero every morning, so the daily snapshot is always yesterday.
 
-Creds on cire (never in repo — STOP 21):
+Creds on the node (never in repo — STOP 21):
   ~/.jarvis/secrets/stripe-iv.key     restricted read-only rk_live_
   ~/.jarvis/secrets/cf-analytics.token  CF token (Account Analytics:Read + Zone:Read)
 """

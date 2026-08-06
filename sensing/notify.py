@@ -8,8 +8,8 @@ from pathlib import Path
 HOME = Path.home()
 NOTIFY = HOME / "jarvis" / "bin" / "notify"
 # ntfy tap. Real value lives in the node env (STOP 21 — never hardcode the tailnet
-# host in a publish-candidate repo). Set CIRE_REPORT_URL on the node.
-REPORT_URL = os.getenv("CIRE_REPORT_URL", "")
+# host in a publish-candidate repo). Set NODE_REPORT_URL on the node.
+REPORT_URL = os.getenv("NODE_REPORT_URL", "")
 
 
 def notify_anomaly(property: str, date: str, flags, priority: str = "high") -> bool:

@@ -1,4 +1,4 @@
-"""L2 daily sensing run (cire, cron ~06:00 CT).
+"""L2 daily sensing run (the node, cron ~06:00 CT).
 
 Pull IV metrics for yesterday -> build_report (persist snapshot + trailing baseline +
 anomaly flags + digest, narrated by the node model) -> write the digest into the vault

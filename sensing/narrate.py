@@ -1,4 +1,4 @@
-"""Narration as a true node function — a direct call to cire's local Ollama.
+"""Narration as a true node function — a direct call to the node's local Ollama.
 
 The digest already renders every number; this only writes prose around the flags,
 so the model can never introduce or alter a figure. keep_alive=0 unloads the model
