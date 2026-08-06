@@ -7,3 +7,4 @@ __pycache__/
 # creds never in repo (STOP 21) — live on cire as files/env
 secrets/
 *.key
+.planning/
