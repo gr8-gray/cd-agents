@@ -34,12 +34,12 @@ anomaly before a human would.
 
 ```mermaid
 flowchart LR
-  PUSH[git push] --> CD[L1: CD agent\ndeploy -> poll-ready]
-  CD --> E2E[E2E verify\nagainst PROD]
-  E2E -->|green| DONE[release stands\n+ notify w/ evidence]
-  E2E -->|red| RB[auto-restore\nlast good release]
-  RB --> NOTIFY[page human\nwith evidence]
-  CRON[scheduled] --> L2[L2: sensing agent\nnarrate site/traffic state\nvia local node inference]
+  PUSH[git push] --> CD[L1: CD agent<br/>deploy → poll-ready]
+  CD --> E2E[E2E verify<br/>against PROD]
+  E2E -->|green| DONE[release stands<br/>+ notify w/ evidence]
+  E2E -->|red| RB[auto-restore<br/>last good release]
+  RB --> NOTIFY[page human<br/>with evidence]
+  CRON[scheduled] --> L2[L2: sensing agent<br/>narrate site/traffic state<br/>via local node inference]
   L2 -->|deviation| NOTIFY
   L2 -->|nominal| QUIET[stay silent]
 ```
